@@ -90,7 +90,7 @@ const DialogRequest = ({ title, children, openDialog, request, setOpenDialog }) 
                 }}
               >
                 <Typography variant="h5">
-                  Requester:
+                  Name:
                 </Typography>
                 <Typography variant="h5">
                   Office:
@@ -184,7 +184,8 @@ const DialogRequest = ({ title, children, openDialog, request, setOpenDialog }) 
                     color: '#fff',
                     width: '75px',
                     textAlign: 'center',
-                    m: '0.25rem',
+                    p: '0.15rem',
+                    m: '0.15rem',
                   })}
                 >
                   {request.CUD}
@@ -201,7 +202,8 @@ const DialogRequest = ({ title, children, openDialog, request, setOpenDialog }) 
                     color: '#fff',
                     width: '75px',
                     textAlign: 'center',
-                    m: '0.25rem',
+                    p: '0.15rem',
+                    m: '0.15rem',
                   })}
                 >
                   {request.Status}
@@ -329,8 +331,9 @@ const DialogRequest = ({ title, children, openDialog, request, setOpenDialog }) 
                 mx: 1,
                 mb: 1,
              }}
+             variant="h4"
             >
-              Requester's Note: {request.Note}
+              User's Note: {request.Note}
             </Typography>
             </Box>
           </DialogContent>
