@@ -1,4 +1,4 @@
-import { Box, IconButton, useTheme, Typography } from "@mui/material";
+import { Box, IconButton, useTheme, Typography, Link } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
@@ -9,11 +9,15 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import MeralcoLogo from "../../assets/MeralcoLogo.png";
+import DictioNetworksLogo from "../../assets/Logo.png";
+import { useLocation } from "react-router-dom";
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const pathname = useLocation();
 
   return (
     <Box 
@@ -25,7 +29,6 @@ const Topbar = () => {
       backgroundColor={colors.primary[400]} 
       position="sticky"
     >
-      {/* SEARCH BAR */}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -33,26 +36,50 @@ const Topbar = () => {
       >
         <Box
           display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="75px"
+        >
+          {/* <Link href=""> */}
+          <Box
+            component="img"
+            sx={{
+              height: 35, 
+              width: 35,
+            }}
+            alt="Logo"
+            src={MeralcoLogo}
+          />
+          {/* </Link> */}
+        </Box>
+        
+        {/* <Box
+          display="flex"
           textAlign="center"
           justifyContent="center"
           width="75px"
-        >
+        > */}
           {/* <IconButton onClick={() => setIsCollapsed(!isCollapsed)}> */}
-          <IconButton>
+          {/* <IconButton>
             <MenuOutlinedIcon
               sx={{ fontSize: 25 }} 
             />
           </IconButton>
-        </Box>
+        </Box> */}
         <Box
           display="flex"
           textAlign="center"
           justifyContent="center"
           marginRight="30px"
         >
-          <Typography variant="h3" fontWeight="bold">DictioNetworks</Typography>
+          <Link href="/" underline="none" variant="h3" fontWeight="bold" color={colors.primary[900]}>
+          {pathname.pathname === "/" ? "" : "DictioNetworks"}
+          </Link>
         </Box>
-        <Box
+        {pathname.pathname === "/" 
+          ? "" 
+          : 
+          <Box
           marginLeft="30px"
           border={1}
           backgroundColor={colors.primary[400]}
@@ -66,10 +93,33 @@ const Topbar = () => {
             <SearchIcon />
           </IconButton>
         </Box>
+        }
+        
       </Box>
 
       {/* ICONS */}
-      <Box display="flex">
+      <Box 
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          component="img"
+          sx={{
+            height: 25, 
+            width: 25,
+            borderRadius: 10,
+            mx: 1,
+          }}
+          alt="Logo"
+          src={DictioNetworksLogo}
+          
+        >
+          
+        </Box>
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
@@ -77,12 +127,12 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
+        {/* <IconButton>
           <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
+        </IconButton> */}
+        {/* <IconButton>
           <SettingsOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton>
           <PersonOutlinedIcon />
         </IconButton>
