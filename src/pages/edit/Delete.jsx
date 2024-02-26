@@ -17,6 +17,7 @@ const Delete = () => {
   const [name, setName] = useState("");
   const [office, setOffice] = useState("");
   const [email, setEmail] = useState("");
+  const [approver, setApprover] = useState("");
   const [id, setId] = useState();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { state } = useLocation();
@@ -40,6 +41,7 @@ const Delete = () => {
         name,
         office,
         email,
+        approver,
         "Pending",
         values.term
             .trim()
@@ -89,6 +91,7 @@ const Delete = () => {
       setName(user.userProps.NewName);
       setOffice(user.userProps.Office);
       setEmail(user.userProps.Email);
+      setApprover(user.userProps.Approver);
   };
 
   const handleFormSubmit = async (values, actions) => {
@@ -101,6 +104,7 @@ const Delete = () => {
   return (
     <Box m="20px">
       <Header title="DELETE" subtitle="Delete an Entry" />
+      <Box mt="30px" />
 
       <Formik
         onSubmit={handleFormSubmit}
