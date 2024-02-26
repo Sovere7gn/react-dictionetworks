@@ -17,6 +17,7 @@ const Create = () => {
   const [name, setName] = useState("");
   const [office, setOffice] = useState("");
   const [email, setEmail] = useState("");
+  const [approver, setApprover] = useState("");
   const [id, setId] = useState();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const Create = () => {
         name,
         office,
         email,
+        approver,
         "Pending",
         values.term
             .trim()
@@ -89,6 +91,7 @@ const Create = () => {
       setName(user.userProps.NewName);
       setOffice(user.userProps.Office);
       setEmail(user.userProps.Email);
+      setApprover(user.userProps.Approver);
   };
 
   const handleFormSubmit = async (values, actions) => {
@@ -136,7 +139,7 @@ const Create = () => {
   return (
     <Box m="20px">
       <Header title="CREATE" subtitle="Create a New Entry" />
-
+      <Box mt="30px" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
