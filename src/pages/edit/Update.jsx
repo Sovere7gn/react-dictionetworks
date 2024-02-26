@@ -17,6 +17,7 @@ const Update = () => {
   const [name, setName] = useState("");
   const [office, setOffice] = useState("");
   const [email, setEmail] = useState("");
+  const [approver, setApprover] = useState("");
   const [id, setId] = useState();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { state } = useLocation();
@@ -40,6 +41,7 @@ const Update = () => {
         name,
         office,
         email,
+        approver,
         "Pending",
         values.term
             .trim()
@@ -89,6 +91,7 @@ const Update = () => {
       setName(user.userProps.NewName);
       setOffice(user.userProps.Office);
       setEmail(user.userProps.Email);
+      setApprover(user.userProps.Approver);
   };
 
   const handleFormSubmit = async (values, actions) => {
@@ -101,6 +104,7 @@ const Update = () => {
   return (
     <Box m="20px">
       <Header title="UPDATE" subtitle="Update an Entry" />
+      <Box mt="30px" />
 
       <Formik
         onSubmit={handleFormSubmit}
