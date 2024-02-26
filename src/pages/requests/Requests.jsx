@@ -38,6 +38,7 @@ const Body = () => {
   const [name, setName] = useState("");
   const [office, setOffice] = useState("");
   const [email, setEmail] = useState("");
+  const [approver, setApprover] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [request, setRequest] = useState([]);
   
@@ -59,6 +60,7 @@ const Body = () => {
       const listItems = await spGetAllItemsToList(LIST_NAME);
       setAllItems(listItems);
       setData(listItems);
+      console.log(listItems)
   }
 
   const getUserProfile = async () => {
@@ -66,6 +68,7 @@ const Body = () => {
       setName(user.userProps.NewName);
       setOffice(user.userProps.Office);
       setEmail(user.userProps.Email);
+      setApprover(user.userProps.Approver);
   };
 
   const performCUD = async (id, cud) => {
@@ -125,6 +128,120 @@ const Body = () => {
   const columns = useMemo(
     () => [
           {
+            accessorKey: 'ID',
+            header: 'Req ID',
+            // layoutMode: 'grid',
+            size: 10,
+            minSize: 10,
+            Cell: ({ cell }) => (
+              <Box
+                // component="span"
+                sx={(theme) => ({
+                  fontWeight: "bold"
+                })}
+              >
+                {cell.getValue()}
+              </Box>
+            ),
+          },
+          {
+            accessorKey: 'Name',
+            filterVariant: 'autocomplete',
+            header: 'Name',
+            // layoutMode: 'grid',
+            // size: '200vh',
+            size: 10,
+            minSize: 10,
+            Cell: ({ cell }) => (
+              <Box
+                // component="span"
+              >
+                <Typography variant="h6"
+                sx={(theme) => ({
+                  // fontWeight: "bold",
+                  width: "15vw",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                })}>
+                  {cell.getValue()}
+                </Typography>
+              </Box>
+            ),
+          },
+          {
+            accessorKey: 'Office',
+            header: 'Office',
+            // layoutMode: 'grid',
+            filterVariant: 'autocomplete',
+            size: 10,
+            minSize: 10,
+            Cell: ({ cell }) => (
+              <Box
+                // component="span"
+              >
+                <Typography variant="h6"
+                sx={(theme) => ({
+                  // fontWeight: "bold",
+                  width: "5vw",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                })}>
+                  {cell.getValue()}
+                </Typography>
+              </Box>
+            ),
+          },
+          {
+            accessorKey: 'Email',
+            filterVariant: 'autocomplete',
+            header: 'Email',
+            // layoutMode: 'grid',
+            size: 10,
+            minSize: 10,
+            Cell: ({ cell }) => (
+              <Box
+                // component="span"
+              >
+                <Typography variant="h6"
+                sx={(theme) => ({
+                  // fontWeight: "bold",
+                  width: "5vw",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                })}>
+                  {cell.getValue()}
+                </Typography>
+              </Box>
+            ),
+          },
+          {
+            accessorKey: 'Approver',
+            header: 'Approver',
+            // layoutMode: 'grid',
+            filterVariant: 'autocomplete',
+            size: 10,
+            minSize: 10,
+            Cell: ({ cell }) => (
+              <Box
+                // component="span"
+              >
+                <Typography variant="h6"
+                sx={(theme) => ({
+                  // fontWeight: "bold",
+                  width: "5vw",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                })}>
+                  {cell.getValue()}
+                </Typography>
+              </Box>
+            ),
+          },
+          {
             accessorKey: 'Term',
             header: 'Term',
             // layoutMode: 'grid-no-grow',
@@ -133,46 +250,17 @@ const Body = () => {
             Cell: ({ cell }) => (
               <Box
                 // component="span"
+              >
+                <Typography variant="h5"
                 sx={(theme) => ({
                   fontWeight: "bold",
-                  width: "20vw",
+                  width: "15vw",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                })}
-              >
-                {cell.getValue()}
-              </Box>
-            ),
-          },
-          {
-            accessorKey: 'CUD',
-            // filterVariant: 'range',
-            filterVariant: 'select',
-            filterSelectOptions: ['Create', 'Update', 'Delete'],
-            header: 'CUD Type',
-            size: 10,
-            minSize: 10,
-            // layoutMode: 'grid',
-            //custom conditional format and styling
-            Cell: ({ cell }) => (
-              <Box
-                // component="span"
-                sx={(theme) => ({
-                  backgroundColor:
-                    cell.getValue() === "Create"
-                      ? theme.palette.info.dark
-                      : cell.getValue() === "Update"
-                        ? theme.palette.success.dark
-                        : theme.palette.error.dark,
-                  borderRadius: '0.25rem',
-                  color: '#fff',
-                  width: '75px',
-                  textAlign: 'center',
-                  p: '0.25rem',
-                })}
-              >
-                {cell.getValue()}
+                })}>
+                  {cell.getValue()}
+                </Typography>
               </Box>
             ),
           },
@@ -194,6 +282,39 @@ const Body = () => {
                 minWidth: '100px',
               },
             },
+          },
+          {
+            accessorKey: 'CUD',
+            // filterVariant: 'range',
+            filterVariant: 'select',
+            filterSelectOptions: ['Create', 'Update', 'Delete'],
+            header: 'CUD Type',
+            size: 10,
+            minSize: 10,
+            // layoutMode: 'grid',
+            //custom conditional format and styling
+            Cell: ({ cell }) => (
+              <Box
+                // component="span"
+                sx={(theme) => ({
+                  backgroundColor:
+                    cell.getValue() === "Update"
+                      ? theme.palette.info.dark
+                      : cell.getValue() === "Create"
+                        ? theme.palette.success.dark
+                        : theme.palette.error.dark,
+                  borderRadius: '0.25rem',
+                  color: '#fff',
+                  width: '125px',
+                  textAlign: 'center',
+                  p: '0.20rem',
+                })}
+              >
+                <Typography variant="h6">
+                  {cell.getValue()}
+                </Typography>
+              </Box>
+            ),
           },
           {
             accessorKey: 'Status',
@@ -229,56 +350,16 @@ const Body = () => {
                         : theme.palette.error.dark,
                   borderRadius: '0.25rem',
                   color: '#fff',
-                  width: '75px',
+                  width: '125px',
                   textAlign: 'center',
-                  p: '0.25rem',
+                  p: '0.20rem',
                 })}
               >
-                {cell.getValue()}
+                <Typography variant="h6">
+                  {cell.getValue()}
+                </Typography>
               </Box>
             ),
-          },
-          {
-            accessorKey: 'ID',
-            header: 'Req ID',
-            // layoutMode: 'grid',
-            size: 10,
-            minSize: 10,
-            Cell: ({ cell }) => (
-              <Box
-                // component="span"
-                sx={(theme) => ({
-                  fontWeight: "bold"
-                })}
-              >
-                {cell.getValue()}
-              </Box>
-            ),
-          },
-          {
-            accessorKey: 'Name',
-            filterVariant: 'autocomplete',
-            header: 'Name',
-            // layoutMode: 'grid',
-            // size: '200vh',
-            size: 10,
-            minSize: 10,
-          },
-          {
-            accessorKey: 'Office',
-            header: 'Office',
-            // layoutMode: 'grid',
-            filterVariant: 'autocomplete',
-            size: 10,
-            minSize: 10,
-          },
-          {
-            accessorKey: 'Email',
-            filterVariant: 'autocomplete',
-            header: 'Email',
-            // layoutMode: 'grid',
-            size: 10,
-            minSize: 10,
           },
           
         ],
@@ -314,11 +395,17 @@ const Body = () => {
         right: ['mrt-row-actions'],
       },
       columnVisibility: { ID: false, Created: false },
+      columnFilters: [
+        { id: 'Status', value: 'Pending' }
+      ],
       sorting: [
         { id: 'Created', desc: true },
         // { id: 'Status', desc: true },
       ],
       pagination: { pageSize: 15 },
+      filterSelectOptions: [
+        { label: 'Status', value: 'Pending' }
+      ]
     },
     // isMultiSortEvent: () => true,
     // enableColumnVirtualization: true,
@@ -326,23 +413,24 @@ const Body = () => {
     paginationDisplayMode: 'pages',
     enableBottomToolbar: false,
     // positionToolbarAlertBanner: 'bottom',
-    muiTableContainerProps: { sx: { maxHeight: '75vh' } },
+    muiTableContainerProps: { sx: { maxHeight: '78.5vh' } },
     muiSearchTextFieldProps: {
       size: 'small',
       variant: 'outlined',
     },
+    muiTableHeadCellProps: {
+      //simple styling with the `sx` prop, works just like a style prop in this example
+      sx: {
+        // display: 'flex',
+        fontWeight: 'bold',
+        fontSize: '16px',
+        // justifyContent: 'center',
+      },
+    },
     muiPaginationProps: {
       rowsPerPageOptions: [5, 10, 15, 20, 25],
-      color: 'secondary',
       shape: 'rounded',
       variant: 'outlined',
-    },
-    muiTableHeadCellProps: {
-      sx: {
-        '& .MuiTableCell-head': {
-          justifyContent: 'space-between !important',
-        },
-      },
     },
     renderRowActions: ({ row }) => [
       <Box>
@@ -420,6 +508,7 @@ const Body = () => {
           // }}
           onClick={() => table.reset(true)} 
           variant="contained"
+          color="warning"
         >
           Clear All Sorting
         </Button>
@@ -482,7 +571,7 @@ const Body = () => {
 const Requests = () => (
   //App.tsx or AppProviders file
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Box m="10px">
+    <Box m="0px 1px 0px 1px">
       <Header title="REQUESTS" subtitle="View Requests" />
       <Box
         m="0 0 0 0"
