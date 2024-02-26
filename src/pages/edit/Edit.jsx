@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, ListItemIcon, MenuItem, Typography, lighten, useTheme } from '@mui/material';
 import Header from '../../components/Header'
-import { MaterialReactTable, useMaterialReactTable, MRT_GlobalFilterTextField, MRT_ToggleFiltersButton } from 'material-react-table';
+import { MaterialReactTable, useMaterialReactTable, MRT_GlobalFilterTextField, MRT_ToggleFiltersButton, MRT_ShowHideColumnsButton } from 'material-react-table';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useMemo, useState, useEffect } from 'react';
@@ -21,6 +21,7 @@ const Example = () => {
   const [name, setName] = useState("");
   const [office, setOffice] = useState("");
   const [email, setEmail] = useState("");
+  const [approver, setApprover] = useState("");
 
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const Example = () => {
       setName(user.userProps.NewName);
       setOffice(user.userProps.Office);
       setEmail(user.userProps.Email);
+      setApprover(user.userProps.Approver);
   };
 
   const navigate = useNavigate();
@@ -70,6 +72,7 @@ const Example = () => {
             enableClickToCopy: true,
             filterVariant: 'autocomplete',
             layoutMode: 'grid',
+            disableSortRemove: true,
             Cell: ({ cell }) => (
               <Box
                 // component="span"
@@ -87,7 +90,6 @@ const Example = () => {
           },
           {
             accessorKey: 'field_1',
-            enableClickToCopy: true,
             filterVariant: 'autocomplete',
             header: 'Definition',
             layoutMode: 'grid',
@@ -110,13 +112,11 @@ const Example = () => {
           {
             accessorKey: 'field_2',
             header: 'Acronym',
-            enableClickToCopy: true,
             filterVariant: 'autocomplete',
             layoutMode: 'grid',
           },
           {
             accessorKey: 'field_3',
-            enableClickToCopy: true,
             filterVariant: 'autocomplete',
             header: 'Additional Information',
             layoutMode: 'grid',
@@ -125,7 +125,7 @@ const Example = () => {
                 // component="span"
                 sx={(theme) => ({
                   fontWeight: "bold",
-                  width: "10vw",
+                  width: "15vw",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -137,7 +137,6 @@ const Example = () => {
           },
           {
             accessorKey: 'field_4',
-            enableClickToCopy: true,
             filterVariant: 'autocomplete',
             header: 'Document Title',
             layoutMode: 'grid',
@@ -158,7 +157,6 @@ const Example = () => {
           },
           {
             accessorKey: 'field_5',
-            enableClickToCopy: true,
             filterVariant: 'autocomplete',
             header: 'Document Code',
             layoutMode: 'grid',
@@ -179,7 +177,6 @@ const Example = () => {
           },
           {
             accessorKey: 'field_6',
-            enableClickToCopy: true,
             filterVariant: 'autocomplete',
             header: 'Document Link',
             layoutMode: 'grid',
@@ -245,128 +242,203 @@ const Example = () => {
     columns,
     data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
     enableColumnFilterModes: true,
-    enableColumnOrdering: true,
     enableGrouping: true,
-    enableColumnPinning: true,
     enableFacetedValues: true,
-    enableRowActions: true,
-    enableRowSelection: false,
+    enableRowActions: false,
+    enableRowSelection: true,
+    enableMultiRowSelection: false,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
     initialState: {
-      showGlobalFilter: true,
+      showGlobalFilter: false,
       density: 'compact',
       columnPinning: {
-        left: ['mrt-row-expand', 'mrt-row-select'],
-        right: ['mrt-row-actions'],
+        left: ['mrt-row-expand'],
+        right: ['mrt-row-actions', 'mrt-row-select'],
       },
-      pagination: { pageSize: 50 },
+      pagination: { pageSize: 20 },
       sorting: [
         { id: 'Title', desc: false },
         // { id: 'Status', desc: true },
       ],
     },
     paginationDisplayMode: 'pages',
+    muiTableContainerProps: { sx: { maxHeight: '69vh' } },
     positionToolbarAlertBanner: 'bottom',
     muiSearchTextFieldProps: {
       size: 'small',
       variant: 'outlined',
     },
     muiPaginationProps: {
-      rowsPerPageOptions: [10, 25, 50, 100, 500],
-      color: 'secondary',
+      rowsPerPageOptions: [10, 20, 50, 100, 500],
       shape: 'rounded',
       variant: 'outlined',
     },
-    renderRowActionMenuItems: ({ row, closeMenu }) => [
-      <MenuItem
-      key={0}
-        onClick={() => {
-          // Go to Request logic...
-          console.log(row.getValue('ID'))
-          requestFunc(row.getValue('ID'), "Update")
+    // renderRowActionMenuItems: ({ row, closeMenu }) => [
+    //   <MenuItem
+    //   key={0}
+    //     onClick={() => {
+    //       // Go to Request logic...
+    //       console.log(row.getValue('ID'))
+    //       requestFunc(row.getValue('ID'), "Update")
           
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <ListItemIcon>
-          <AccountCircle />
-        </ListItemIcon>
-        Update Entry
-      </MenuItem>,
-      <MenuItem
-        key={1}
-        onClick={() => {
-          // Go to Request logic...
-          console.log(row.getValue('ID'))
-          requestFunc(row.getValue('ID'), "Delete")
+    //       closeMenu();
+    //     }}
+    //     sx={{ m: 0 }}
+    //   >
+    //     <ListItemIcon>
+    //       <AccountCircle />
+    //     </ListItemIcon>
+    //     Update Entry
+    //   </MenuItem>,
+    //   <MenuItem
+    //     key={1}
+    //     onClick={() => {
+    //       // Go to Request logic...
+    //       console.log(row.getValue('ID'))
+    //       requestFunc(row.getValue('ID'), "Delete")
           
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <ListItemIcon>
-          <Send />
-        </ListItemIcon>
-        Delete Entry
-      </MenuItem>,
-    ],
-    renderTopToolbar: ({ table }) => {
+    //       closeMenu();
+    //     }}
+    //     sx={{ m: 0 }}
+    //   >
+    //     <ListItemIcon>
+    //       <Send />
+    //     </ListItemIcon>
+    //     Delete Entry
+    //   </MenuItem>,
+    // ],
+    // renderTopToolbar: ({ table }) => {
+    //   const handleApprove = () => {
+    //     table.getSelectedRowModel().flatRows.map(async (row) => {
+    //       alert('activating ' + row.getValue('name'));
+    //     });
+    //   };
 
-      const handleApprove = () => {
-        table.getSelectedRowModel().flatRows.map(async (row) => {
-          alert('activating ' + row.getValue('name'));
-        });
-      };
-
-      const handleReturn = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert('deactivating ' + row.getValue('name'));
-        });
-      };
+    //   const handleReturn = () => {
+    //     table.getSelectedRowModel().flatRows.map((row) => {
+    //       alert('deactivating ' + row.getValue('name'));
+    //     });
+    //   };
 
 
-      return (
-        <>
-          <Box
-            sx={(theme) => ({
-              backgroundColor: lighten(theme.palette.background.default, 0.05),
-              display: 'flex',
-              gap: '0.5rem',
-              p: '8px',
-              justifyContent: 'space-between',
-            })}
-          >
-            <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-              {/* import MRT sub-components */}
-              <MRT_GlobalFilterTextField table={table} />
-              <MRT_ToggleFiltersButton table={table} />
-            </Box>
-            <Box>
-              <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-              <Button
-                  color="success"
-                  disabled={!table.getIsSomeRowsSelected()}
-                  onClick={handleApprove}
-                  variant="contained"
-                >
-                  Approve
-                </Button>
-                <Button
-                  color="error"
-                  disabled={!table.getIsSomeRowsSelected()}
-                  onClick={handleReturn}
-                  variant="contained"
-                >
-                  Return
-                </Button>
-              </Box>
-            </Box>
-          </Box>
+    //   return (
+    //     <>
+    //       <Box
+    //         sx={(theme) => ({
+    //           backgroundColor: lighten(theme.palette.background.default, 0.05),
+    //           display: 'flex',
+    //           gap: '0.5rem',
+    //           p: '8px',
+    //           justifyContent: 'space-between',
+    //         })}
+    //       >
+    //         <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+    //           {/* import MRT sub-components */}
+    //           <MRT_GlobalFilterTextField table={table} />
+    //           <MRT_ToggleFiltersButton table={table} />
+    //         </Box>
+    //         <Box>
+    //           <Box sx={{ display: 'flex', gap: '0.5rem' }}>
+    //           <Button
+    //               color="success"
+    //               disabled={!table.getIsSomeRowsSelected()}
+    //               onClick={handleApprove}
+    //               variant="contained"
+    //             >
+    //               Approve
+    //             </Button>
+    //             <Button
+    //               color="error"
+    //               disabled={!table.getIsSomeRowsSelected()}
+    //               onClick={handleReturn}
+    //               variant="contained"
+    //             >
+    //               Return
+    //             </Button>
+    //           </Box>
+    //         </Box>
+    //       </Box>
 
-        </>
+    //     </>
 
-      );
-    },
+    //   );
+    // },
+    renderTopToolbarCustomActions: ({ table, row }) => (
+      <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
+        <Button 
+          // sx={{
+          //   backgroundColor: colors.blueAccent[500],
+          //   color: colors.primary[400]
+          // }}
+          onClick={() => navigate('/edit/create')} 
+          variant="contained"
+          color="success"
+        >
+          Create New Term
+        </Button>
+        <Button 
+          // sx={{
+          //   backgroundColor: colors.blueAccent[500],
+          //   color: colors.primary[400]
+          // }}
+          onClick={() => {
+            navigate('/edit/update');
+            table.getSelectedRowModel().flatRows.map((row) => {
+              requestFunc(row.getValue('ID'), "Update");
+            })
+          }} 
+          variant="contained"
+          color="info"
+          disabled={!table.getIsSomeRowsSelected()}
+        >
+          Update Selected Term
+        </Button>
+        <Button 
+          // sx={{
+          //   backgroundColor: colors.blueAccent[500],
+          //   color: colors.primary[400]
+          // }}
+          onClick={() => {
+            navigate('/edit/delete');
+            table.getSelectedRowModel().flatRows.map((row) => {
+              requestFunc(row.getValue('ID'), "Delete");
+            })
+          }} 
+          variant="contained"
+          color="error"
+          disabled={!table.getIsSomeRowsSelected()}
+        >
+          Delete Selected Term
+        </Button>
+        {/* <Button
+          color="secondary"
+          onClick={() => {
+            alert('Create New Account');
+          }}
+          variant="contained"
+        >
+          Create Account
+        </Button>
+        <Button
+          color="error"
+          disabled={!table.getIsSomeRowsSelected()}
+          onClick={() => {
+            alert('Delete Selected Accounts');
+          }}
+          variant="contained"
+        >
+          Delete Selected Accounts
+        </Button>
+        <MRT_GlobalFilterTextField table={table} /> */}
+      </Box>
+    ),
+    
+    renderToolbarInternalActions: ({ table }) => (
+      <Box>
+        <MRT_ShowHideColumnsButton table={table} />
+      </Box>
+    ),
   });
 
   return (
@@ -381,10 +453,11 @@ const Example = () => {
 const Edit = () => (
   //App.tsx or AppProviders file
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Box m="20px">
+    <Box m="0px 1px 0px 1px">
       <Header title="EDIT" subtitle="Edit DictioNetworks" />
       <Box
-        m="20px 0 0 0"
+        // m="20px 0 0 0"
+        m="0 0 0 0"
         sx={{
           "& .MuiBox-root": {
           },
